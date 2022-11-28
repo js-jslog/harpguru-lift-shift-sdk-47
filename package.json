@@ -7,7 +7,8 @@
     "packages/*"
   ],
   "scripts": {
-    "tsc": "lerna run tsc --stream"
+    "tsc": "lerna run tsc --stream",
+    "test": "lerna run test --stream"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

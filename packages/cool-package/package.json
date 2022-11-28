@@ -4,10 +4,15 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "tsc": "tsc"
+    "tsc": "tsc",
+    "test": "jest"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg)"
+    ]
   },
   "dependencies": {
-    "jest": "^26.6.3",
-    "jest-expo": "^47.0.1"
+    "jest": "^26.6.3"
   }
 }
