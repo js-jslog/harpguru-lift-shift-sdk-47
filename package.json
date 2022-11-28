@@ -6,6 +6,9 @@
     "apps/*",
     "packages/*"
   ],
+  "scripts": {
+    "tsc": "lerna run tsc --stream"
+  },
   "devDependencies": {
     "@babel/core": "^7.12.9",
     "@types/react": "~18.0.14",
