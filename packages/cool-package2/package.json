@@ -4,6 +4,6 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "tsci": "tsc"
+    "tsc": "tsc"
   }
 }
