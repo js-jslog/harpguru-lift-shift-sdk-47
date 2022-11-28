@@ -5,5 +5,9 @@
   "license": "MIT",
   "scripts": {
     "tsc": "tsc"
+  },
+  "dependencies": {
+    "jest": "^26.6.3",
+    "jest-expo": "^47.0.1"
   }
 }
