@@ -1,0 +1,9 @@
+{
+  "name": "cool-package2",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "license": "MIT",
+  "scripts": {
+    "tsci": "tsc"
+  }
+}

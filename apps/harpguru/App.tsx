@@ -6,6 +6,7 @@ import Animated, {
   withSpring,
 } from 'react-native-reanimated';
 import { greeting } from 'cool-package';
+import { greetingagain } from 'cool-package2';
 
 export default () => {
   const randomNumber = useSharedValue(100);
@@ -39,6 +40,7 @@ export default () => {
         />
       </TouchableOpacity>
       <Text>{greeting}</Text>
+      <Text>{greetingagain}</Text>
     </View>
   );
 };
