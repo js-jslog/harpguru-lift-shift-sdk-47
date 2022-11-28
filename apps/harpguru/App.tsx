@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, TouchableOpacity, Image } from 'react-native';
+import { View, TouchableOpacity, Text, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated';
+import { greeting } from 'cool-package';
 
 export default () => {
   const randomNumber = useSharedValue(100);
@@ -37,6 +38,7 @@ export default () => {
           style={style}
         />
       </TouchableOpacity>
+      <Text>{greeting}</Text>
     </View>
   );
 };
