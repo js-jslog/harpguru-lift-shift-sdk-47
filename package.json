@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "lint": "lerna run lint --stream",
+    "lint-fix": "lerna run lint-fix --stream",
     "prettier": "prettier --write .",
     "tsc": "lerna run tsc --stream",
     "test": "lerna run test --stream"
