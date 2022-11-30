@@ -1,21 +1,22 @@
-import React from 'react';
-import { View, TouchableOpacity, Text, Image } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
-} from 'react-native-reanimated';
-import { greeting } from 'cool-package';
+} from 'react-native-reanimated'
+import { View, TouchableOpacity, Text } from 'react-native'
+import React from 'react'
+import { greetingagain } from 'cool-package2'
+import { greeting } from 'cool-package'
 
 export default () => {
-  const randomNumber = useSharedValue(100);
+  const randomNumber = useSharedValue(100)
 
   const style = useAnimatedStyle(() => {
     return {
       width: withSpring(randomNumber.value),
       height: withSpring(randomNumber.value, { stiffness: 10 }),
-    };
-  });
+    }
+  })
 
   return (
     <View
@@ -29,7 +30,7 @@ export default () => {
     >
       <TouchableOpacity
         onPress={() => {
-          randomNumber.value = Math.random() * 350;
+          randomNumber.value = Math.random() * 350
         }}
       >
         <Animated.Image
@@ -39,6 +40,7 @@ export default () => {
         />
       </TouchableOpacity>
       <Text>{greeting}</Text>
+      <Text>{greetingagain}</Text>
     </View>
-  );
-};
+  )
+}
