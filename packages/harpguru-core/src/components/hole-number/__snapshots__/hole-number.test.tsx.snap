@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`A snapshot of HoleNumber 1`] = `
+<View
+  style={
+    Object {
+      "alignItems": "center",
+      "height": 22.034250207026385,
+      "justifyContent": "center",
+      "top": -11.017125103513193,
+      "width": 57.6864220478633,
+    }
+  }
+>
+  <Text
+    allowFontScaling={false}
+    style={
+      Object {
+        "color": "#555",
+        "fontSize": 22.034250207026385,
+      }
+    }
+  >
+    1
+  </Text>
+</View>
+`;
