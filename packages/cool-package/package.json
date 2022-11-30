@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint .",
+    "lint-fix": "eslint . --fix",
     "tsc": "tsc",
     "test": "jest"
   },
