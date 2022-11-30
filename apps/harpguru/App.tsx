@@ -1,12 +1,12 @@
-import React from 'react'
-import { View, TouchableOpacity, Text } from 'react-native'
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
   withSpring,
 } from 'react-native-reanimated'
-import { greeting } from 'cool-package'
+import { View, TouchableOpacity, Text } from 'react-native'
+import React from 'react'
 import { greetingagain } from 'cool-package2'
+import { greeting } from 'cool-package'
 
 export default () => {
   const randomNumber = useSharedValue(100)
