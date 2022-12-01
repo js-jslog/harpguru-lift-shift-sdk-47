@@ -33,11 +33,5 @@
   "devDependencies": {
     "@testing-library/react-native": "^7.1.0"
   },
-  "jest": {
-    "preset": "react-native",
-    "setupFiles": [
-      "./jest.setup.js"
-    ]
-  },
   "private": false
 }
