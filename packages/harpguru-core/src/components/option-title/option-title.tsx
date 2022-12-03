@@ -2,14 +2,16 @@ import Animated from 'react-native-reanimated'
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
 
+import type { WithTransition } from '../../types'
 import { useOptionSizes } from '../../hooks'
 
-export type OptionTitleProps = {
+export type OptionTitleProps = WithTransition & {
   readonly useTitle: () => React.ReactElement
 }
 
 export const OptionTitle = ({
   useTitle,
+  transitionValue,
 }: OptionTitleProps): React.ReactElement => {
   const title = useTitle()
 
@@ -26,7 +28,7 @@ export const OptionTitle = ({
     },
   })
   return (
-    <Animated.View style={[wrapper, { opacity: 0 }]}>
+    <Animated.View style={[wrapper, { opacity: transitionValue }]}>
       <View style={gutterSpacer}>{title}</View>
     </Animated.View>
   )

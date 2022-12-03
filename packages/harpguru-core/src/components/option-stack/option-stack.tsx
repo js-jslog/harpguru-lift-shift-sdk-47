@@ -7,6 +7,7 @@ import { OptionListStack } from '../option-list-stack'
 import type { OptionListProps } from '../option-list'
 
 import { areOptionStacksEqual } from './utils'
+import { useFoundationAnimationValues } from './hooks'
 
 type OptionProps = Omit<OptionTitleProps, 'transitionValue'> &
   Omit<OptionListProps, 'transitionValue'>
@@ -16,15 +17,16 @@ export type OptionStackProps = {
 }
 
 export const OptionStack = (props: OptionStackProps): React.ReactElement => {
+  const { stackState, stackStateTransition } = useFoundationAnimationValues()
   const {
     optionPropsz: { length: stackLength },
   } = props
 
   const titleStack = (
-    <OptionTitleStack {...props} />
+    <OptionTitleStack {...props} transitionValue={stackStateTransition} />
   )
   const listStack = (
-    <OptionListStack {...props} />
+    <OptionListStack {...props} transitionValue={stackStateTransition} />
   )
 
   return (
@@ -34,10 +36,14 @@ export const OptionStack = (props: OptionStackProps): React.ReactElement => {
       <OptionStackPointer
         stackLength={stackLength}
         direction={'NEXT'}
+        stateValue={stackState}
+        transitionValue={stackStateTransition}
       />
       <OptionStackPointer
         stackLength={stackLength}
         direction={'PREVIOUS'}
+        stateValue={stackState}
+        transitionValue={stackStateTransition}
       />
     </>
   )

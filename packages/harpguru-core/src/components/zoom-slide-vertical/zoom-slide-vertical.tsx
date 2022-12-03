@@ -69,12 +69,14 @@ const ZoomSlideVerticalVisible = ({
     trackBounds,
     setTrackBounds,
     labelStateSetterRef,
+    slideOffsetAnimation,
   } = useSlideState(columnBounds, columnCount)
 
   const [, setSourceColumnBounds] = useGlobal('sourceColumnBounds')
   const { onGesture, onStateChange } = getGestureHandlerCallbacks(
     trackBounds,
     columnCount,
+    slideOffsetAnimation,
     labelStateSetterRef.current,
     setTrackBounds,
     setSourceColumnBounds
@@ -98,7 +100,7 @@ const ZoomSlideVerticalVisible = ({
     >
       <View style={track}>
         <Animated.View
-          style={[slide]}
+          style={[slide, { transform: [{ translateY: slideOffsetAnimation }] }]}
         >
           <View style={pointerLayer}>
             <View style={topPointer}>

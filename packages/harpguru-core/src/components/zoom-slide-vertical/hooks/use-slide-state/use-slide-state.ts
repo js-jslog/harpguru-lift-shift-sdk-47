@@ -1,7 +1,9 @@
+import { Value } from 'react-native-reanimated'
 import { useState, useEffect } from 'react'
 import type { MutableRefObject } from 'react'
 
 import { useLabelStateSetterRef } from '../use-label-state-setter-ref'
+import { getSlideFacts } from '../../utils'
 import { isMatchColumnBounds } from '../../../../utils'
 
 type SlideStateObjects = {
@@ -10,6 +12,7 @@ type SlideStateObjects = {
   readonly labelStateSetterRef: MutableRefObject<
     (arg0: readonly [number, number]) => void
   >
+  readonly slideOffsetAnimation: Value<number>
 }
 export const useSlideState = (
   columnBounds: readonly [number, number],
@@ -19,6 +22,8 @@ export const useSlideState = (
     columnBounds
   )
   const labelStateSetterRef = useLabelStateSetterRef(trackBounds)
+  const { slideOffsetLength } = getSlideFacts(trackBounds, columnCount)
+  const slideOffsetAnimation = new Value<number>(slideOffsetLength)
 
   // This effect makes sure that when the columnBounds are updated
   // by other elements of the app, that the trackBounds are updated
@@ -34,5 +39,6 @@ export const useSlideState = (
     trackBounds,
     setTrackBounds,
     labelStateSetterRef,
+    slideOffsetAnimation,
   }
 }

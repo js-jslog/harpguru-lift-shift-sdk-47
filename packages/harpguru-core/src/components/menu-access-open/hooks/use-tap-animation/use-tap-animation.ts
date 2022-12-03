@@ -1,13 +1,34 @@
+import { useTimingTransition } from 'react-native-redash'
+import { Node, EasingNode, interpolateNode } from 'react-native-reanimated'
+import { State } from 'react-native-gesture-handler'
+import type { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler'
 import React from 'react'
 
 import { usePrevious } from '../../../../hooks'
 import { tapAnimationDuration } from '../../../../constants'
 
+type TapEventHandler = (arg0: TapGestureHandlerStateChangeEvent) => void
+
 export const useTapAnimation = (
   openCloseMenu: () => void
-) => {
+): [Node<number>, TapEventHandler] => {
   const [isTapped, setIsTapped] = React.useState(false)
   const changedTap = isTapped !== usePrevious(isTapped, isTapped)
+  const timingValue = useTimingTransition(isTapped, {
+    duration: tapAnimationDuration,
+    easing: EasingNode.inOut(EasingNode.circle),
+  })
+  const animationValue = interpolateNode(timingValue, {
+    inputRange: [0, 1],
+    outputRange: isTapped ? [1, 5] : [1, 5],
+  })
+  const handleTapStateChange = (event: TapGestureHandlerStateChangeEvent) => {
+    const { nativeEvent } = event
+    if (nativeEvent.state === State.BEGAN) setIsTapped(true)
+    if ([State.FAILED, State.CANCELLED].includes(nativeEvent.state))
+      setIsTapped(false)
+    if (nativeEvent.state === State.END) setIsTapped(false)
+  }
 
   React.useEffect(() => {
     const postAnimation = setTimeout(() => {
@@ -20,5 +41,5 @@ export const useTapAnimation = (
     }
   }, [changedTap, setIsTapped, openCloseMenu])
 
-  return
+  return [animationValue, handleTapStateChange]
 }

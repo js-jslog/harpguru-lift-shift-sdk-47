@@ -1,3 +1,4 @@
+import type { Value } from 'react-native-reanimated'
 import type { PanGestureHandlerGestureEvent } from 'react-native-gesture-handler'
 
 import { getWithSnapProps } from '../get-withsnap-props'
@@ -12,6 +13,7 @@ type GestureHandlerCallbacks = {
 export const getGestureHandlerCallbacks = (
   trackBounds: readonly [number, number],
   columnCount: number,
+  slideOffsetAnimation: Value<number>,
   setLabelColumnBounds: (arg0: readonly [number, number]) => void,
   setSlideColumnBounds: (arg0: readonly [number, number]) => void,
   setSourceColumnBounds: (arg0: ColumnBounds) => void
@@ -40,6 +42,7 @@ export const getGestureHandlerCallbacks = (
     )
     const endHoleIndex = withSnapIndex + slideIndexSpan
     setLabelColumnBounds([withSnapIndex, endHoleIndex])
+    slideOffsetAnimation.setValue(withGestureSlideOffset)
   }
 
   const onStateChange = ({
