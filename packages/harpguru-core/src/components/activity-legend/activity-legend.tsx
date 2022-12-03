@@ -1,10 +1,4 @@
 import { useGlobal } from 'reactn'
-import { useTimingTransition } from 'react-native-redash'
-import Animated, {
-  Easing,
-  interpolate,
-  multiply,
-} from 'react-native-reanimated'
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
 import { getDegreeIds, getPitchIds } from 'harpparts'
@@ -75,8 +69,6 @@ const ActivityCell = ({
   isActive,
 }: ActivityCellProps): React.ReactElement => {
   const [activeExperienceMode] = useGlobal('activeExperienceMode')
-  const [dynamicSizes] = useGlobal('dynamicSizes')
-  const { legendWidth } = dynamicSizes
 
   const styles = StyleSheet.create({
     cell: {
@@ -91,24 +83,12 @@ const ActivityCell = ({
     },
   })
 
-  const activityCellTiming = useTimingTransition(isActive, {
-    duration: 200,
-    easing: Easing.inOut(Easing.circle),
-  })
-  const activityCellAnimation = interpolate(activityCellTiming, {
-    inputRange: [0, 1],
-    outputRange: [multiply(legendWidth, -1), 0],
-  })
-
   return (
     <>
       <View style={styles.cell}>
-        <Animated.View
+        <View
           style={[
             styles.cellColor,
-            {
-              transform: [{ translateX: activityCellAnimation }],
-            },
           ]}
         />
         <RenderedTone

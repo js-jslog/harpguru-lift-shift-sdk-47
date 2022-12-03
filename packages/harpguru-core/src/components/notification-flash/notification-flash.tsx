@@ -6,8 +6,6 @@ import type { ReactElement } from 'react'
 import { getColors } from '../../utils'
 import { ChildrenProps } from '../../types'
 
-import { useFlashAnimationValues } from './hooks'
-
 type NotificationFlashProps = ChildrenProps & {
   readonly shouldDisplay: boolean
 }
@@ -16,12 +14,6 @@ export const NotificationFlash = ({
   shouldDisplay,
   children,
 }: NotificationFlashProps): ReactElement => {
-  const [
-    translateX,
-    messageScale,
-    explosionOpacity,
-    messageOpacity,
-  ] = useFlashAnimationValues(shouldDisplay)
 
   const colors = getColors()
 
@@ -51,8 +43,7 @@ export const NotificationFlash = ({
         style={[
           styles.pinkExplosion,
           {
-            transform: [{ translateX: translateX }],
-            opacity: explosionOpacity,
+            opacity: 0,
           },
         ]}
       />
@@ -60,8 +51,7 @@ export const NotificationFlash = ({
         style={[
           styles.messageUnderlay,
           {
-            transform: [{ translateX: translateX }],
-            opacity: messageOpacity,
+            opacity: 0,
           },
         ]}
       />
@@ -69,18 +59,7 @@ export const NotificationFlash = ({
         style={[
           styles.message,
           {
-            transform: [
-              {
-                // WARNING: in iOS only; the scale *must* be performed before the
-                // translation, or the translation will not be observed at all.
-                // I do not have a good explanation for this and it doesn't seem
-                // to conform to the observation of the other comment added in
-                // this commit.
-                scale: messageScale,
-                translateX: translateX,
-              },
-            ],
-            opacity: messageOpacity,
+            opacity: 0,
           },
         ]}
       >

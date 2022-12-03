@@ -1,14 +1,13 @@
-import Animated, { interpolate } from 'react-native-reanimated'
+import Animated from 'react-native-reanimated'
 import { FlatList } from 'react-native-gesture-handler'
 import { StyleSheet, View } from 'react-native'
 import React from 'react'
 
 import type { OptionLabelProps } from '../option-label'
-import type { WithTransition } from '../../types'
 import { getWindowDimensions } from '../../packages/get-window-dimensions'
 import { useOptionSizes } from '../../hooks'
 
-export type OptionListProps = WithTransition & {
+export type OptionListProps = {
   readonly useItems: () => ReadonlyArray<React.ReactElement>
   readonly twoColumns?: boolean
   readonly useLeftColumnLabel?: () => React.ReactElement<OptionLabelProps>
@@ -20,7 +19,6 @@ export const OptionList = ({
   twoColumns = false,
   useLeftColumnLabel = () => <></>,
   useRightColumnLabel = () => <></>,
-  transitionValue,
 }: OptionListProps): React.ReactElement => {
   const { largeGutter, itemWidth, internalGutter } = useOptionSizes()
   const { longEdge } = getWindowDimensions()
@@ -43,21 +41,10 @@ export const OptionList = ({
   const leftColumnLabel = useLeftColumnLabel()
   const rightColumnLabel = useRightColumnLabel()
 
-  const translateX = interpolate(transitionValue, {
-    inputRange: [0, 1],
-    outputRange: [longEdge, 0],
-  })
-
   return (
     <Animated.View
       style={{
         ...StyleSheet.absoluteFillObject,
-        transform: [
-          {
-            translateX: translateX,
-          },
-        ],
-        opacity: transitionValue,
       }}
     >
       <View style={[common, left]}>{leftColumnLabel}</View>

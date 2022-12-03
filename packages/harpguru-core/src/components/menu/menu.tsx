@@ -5,7 +5,6 @@ import React from 'react'
 
 import type { MenuProps, ChildrenProps } from '../../types'
 import {
-  useMenuAnimationValues,
   useScaledMenuLabelProtrusion,
 } from '../../hooks'
 
@@ -15,13 +14,6 @@ export const Menu = ({
   stashPosition,
   children,
 }: MenuProps & ChildrenProps): React.ReactElement => {
-  const {
-    slideX,
-    slideY,
-    scale,
-    backgroundColor,
-    opacity,
-  } = useMenuAnimationValues(isMenuStashed, isLabelHidden, stashPosition)
   const scaledLabelProtrusion = useScaledMenuLabelProtrusion()
 
   const [dynamicSizes] = useGlobal('dynamicSizes')
@@ -50,23 +42,12 @@ export const Menu = ({
           // will be reduced proportionally to the scaling if
           // the scaling is performed first. This is platform
           // independent.
-          transform: [
-            {
-              translateY: slideY,
-              translateX: slideX,
-              scale: scale,
-            },
-          ],
         },
       ]}
     >
       <Animated.View
         style={[
           styles.overlay,
-          {
-            backgroundColor,
-            opacity: opacity,
-          },
         ]}
       >
         {children}

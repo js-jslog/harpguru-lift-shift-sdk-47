@@ -1,5 +1,4 @@
 import type { StateTuple } from 'reactn/types/use-global'
-import type { Node, Value } from 'react-native-reanimated'
 import type { HarpStrata } from 'harpstrata'
 import type {
   Degree,
@@ -134,14 +133,6 @@ export type RenderableToneTuples =
   | [RenderableToneTuple]
 
 export type PageNumber = 1 | 2
-
-export type WithTransition = {
-  readonly transitionValue: Node<number>
-}
-
-export type WithStateValue = {
-  readonly stateValue: Value<number>
-}
 
 export enum ZoomIds {
   Fit = 'FIT',
