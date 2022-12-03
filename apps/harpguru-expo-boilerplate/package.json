@@ -2,7 +2,7 @@
   "name": "harpguru-expo-boilerplate",
   "version": "5.1.0",
   "description": "An expo based boilerplate to run the harpguru-core app",
-  "main": "__generated__/AppEntry.js",
+  "main": "index.ts",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
