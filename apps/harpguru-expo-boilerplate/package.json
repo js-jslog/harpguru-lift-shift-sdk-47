@@ -1,0 +1,28 @@
+{
+  "name": "harpguru-expo-boilerplate",
+  "version": "5.1.0",
+  "description": "An expo based boilerplate to run the harpguru-core app",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
+    "eject": "expo eject",
+    "tsc": "tsc",
+    "lint": "eslint --ext .ts,.tsx .",
+    "lint-file": "eslint --ext .ts,.tsx",
+    "ci": "yarn lint && yarn tsc",
+    "build-ios-archive": "expo build:ios -t archive --clear-credentials",
+    "build-ios-simulator": "expo build:ios -t simulator --clear-credentials",
+    "build-android-aad": "expo build:android -t app-bundle --clear-credentials",
+    "build-android-apk": "expo build:android -t apk --clear-credentials"
+  },
+  "dependencies": {
+    "expo": "~47.0.8",
+    "harpguru-core": "^9.0.0",
+    "react": "18.1.0",
+    "react-native": "0.70.5"
+  },
+  "private": true
+}
