@@ -40,6 +40,7 @@ const App = (): ReactElement => {
           <Text style={styles.footer}>Engine: Hermes</Text>
         </View>
       )}
+      <Text>All we need now is an app to run</Text>
     </>
   )
 }
