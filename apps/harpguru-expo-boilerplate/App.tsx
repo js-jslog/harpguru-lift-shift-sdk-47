@@ -12,7 +12,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen'
 import { StatusBar, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import type { ReactElement } from 'react'
-//import { HarpGuru } from 'harpguru-core'
+import { HarpGuru } from 'harpguru-core'
 
 declare const global: { HermesInternal: null | unknown }
 
@@ -40,7 +40,7 @@ const App = (): ReactElement => {
           <Text style={styles.footer}>Engine: Hermes</Text>
         </View>
       )}
-      <Text>All we need now is an app to run</Text>
+      <HarpGuru />
     </>
   )
 }
