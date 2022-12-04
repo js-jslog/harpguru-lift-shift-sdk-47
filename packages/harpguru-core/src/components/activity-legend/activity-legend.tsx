@@ -2,7 +2,6 @@ import { useGlobal } from 'reactn'
 import Animated, {
   interpolate,
   useAnimatedStyle,
-  useSharedValue,
   useDerivedValue,
   withTiming,
   Easing,
@@ -93,20 +92,18 @@ const ActivityCell = ({
     },
   })
 
-  const sharedValue = useSharedValue(isActive)
   const derivedValue = useDerivedValue(() => {
-    return (sharedValue ? 1 : 0)
-  })
-
-  const activityCellAnimation = withTiming(interpolate(derivedValue.value, [0, 1], [legendWidth *-1, 0]), {
-    duration: 200,
-    easing: Easing.inOut(Easing.circle)
+    return withTiming((isActive ? 1 : 0), {
+      duration: 2000,
+      easing: Easing.inOut(Easing.circle)
+    })
   })
 
   const animatedStyle = useAnimatedStyle(() => {
-    return {
-      translateX: activityCellAnimation
-    }
+    const translateX = interpolate(derivedValue.value, [0, 1], [legendWidth *-1, 0])
+    // TODO: Can all these have the `transform` removed; ie:
+    // return {translateX: activityCellAnimation}
+    return { transform: [{translateX}]}
   })
 
   return (
