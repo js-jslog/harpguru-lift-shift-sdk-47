@@ -94,7 +94,7 @@ const ActivityCell = ({
 
   const derivedValue = useDerivedValue(() => {
     return withTiming((isActive ? 1 : 0), {
-      duration: 2000,
+      duration: 200,
       easing: Easing.inOut(Easing.circle)
     })
   })
