@@ -2,8 +2,7 @@ import 'react-native-gesture-handler'
 
 import { useWindowDimensions } from 'use-dimensions'
 import { createProvider } from 'reactn'
-import { withTimingTransition, useValue } from 'react-native-redash'
-import Animated, { EasingNode, interpolateNode } from 'react-native-reanimated'
+import Animated, { withTiming, Easing, interpolate, useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import type { ReactElement } from 'react'
@@ -20,15 +19,12 @@ const Provider2 = createProvider(getInitialGlobalState(2))
 export const HarpGuru = (): ReactElement => {
   useWindowDimensions()
 
-  const pageInFrame = useValue<PageNumber>(1)
-
-  const { shortEdge } = getWindowDimensions()
-
-  const pageTransition = withTimingTransition(pageInFrame, {
+  const { shortEdge: offScreen } = getWindowDimensions()
+  const pageOnDisplay = useSharedValue<PageNumber>(1)
+  const pageOnDisplayTiming = withTiming(pageOnDisplay.value, {
     duration: 300,
-    easing: EasingNode.inOut(EasingNode.ease),
+    easing: Easing.inOut(Easing.ease)
   })
-  const offscreen = shortEdge
   // The strange decimal stopoff on the way to the next integer
   // in each of these is to allow the animation to appear to
   // take the page just barely out of frame, but to then take
@@ -36,13 +32,9 @@ export const HarpGuru = (): ReactElement => {
   // is as smooth as possible, but the page is well out of the
   // way in case any animated objects move outside of it's page
   // frame towards interferring with the next page.
-  const page1Y = interpolateNode(pageTransition, {
-    inputRange: [1, 1.9, 2],
-    outputRange: [0, offscreen, offscreen * 10],
-  })
-  const page2Y = interpolateNode(pageTransition, {
-    inputRange: [1, 2],
-    outputRange: [0, 0],
+  const page1Y = interpolate(pageOnDisplayTiming, [1, 1.9, 2], [0, offScreen, offScreen * 10])
+  const page1YAnimationStyle = useAnimatedStyle(() => {
+    return { transform: [{ translateY: page1Y }]}
   })
 
   return (
@@ -51,24 +43,19 @@ export const HarpGuru = (): ReactElement => {
         <Animated.View
           style={[
             { ...StyleSheet.absoluteFillObject },
-            {
-              transform: [{ translateY: page2Y }],
-            },
           ]}
         >
-          <HarpGuruPage pageOnDisplay={pageInFrame} thisPage={2} />
+          <HarpGuruPage pageOnDisplay={pageOnDisplay} thisPage={2} />
         </Animated.View>
       </Provider2>
       <Provider1>
         <Animated.View
           style={[
             { ...StyleSheet.absoluteFillObject },
-            {
-              transform: [{ translateY: page1Y }],
-            },
+            page1YAnimationStyle
           ]}
         >
-          <HarpGuruPage pageOnDisplay={pageInFrame} thisPage={1} />
+          <HarpGuruPage pageOnDisplay={pageOnDisplay} thisPage={1} />
         </Animated.View>
       </Provider1>
     </>

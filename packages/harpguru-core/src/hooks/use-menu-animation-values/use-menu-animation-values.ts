@@ -1,14 +1,10 @@
-import { useTimingTransition } from 'react-native-redash'
 import {
-  EasingNode,
-  interpolateNode,
+  withTiming,
+  Easing,
+  interpolate,
   interpolateColors,
-  sub,
-  multiply,
-  add,
-  divide,
+  useDerivedValue,
 } from 'react-native-reanimated'
-import type { Node } from 'react-native-reanimated'
 
 import { useScaledMenuLabelProtrusion } from '../use-scaled-menu-label-protrusion'
 import { getColors } from '../../utils'
@@ -22,12 +18,12 @@ import {
 } from '../../constants'
 
 type MenuAnimationValues = {
-  readonly slideX: Node<number>
-  readonly slideY: Node<number>
-  readonly scale: Node<number>
-  readonly backgroundColor: Node<number>
-  readonly opacity: Node<number>
-  readonly labelCounterScale: Node<number>
+  readonly slideX: number
+  readonly slideY: number
+  readonly scale: number
+  readonly backgroundColor: string,
+  readonly opacity: number
+  readonly labelCounterScale: number
 }
 
 export const useMenuAnimationValues = (
@@ -67,56 +63,37 @@ export const useMenuAnimationValues = (
 
   const { shortEdge, longEdge } = getWindowDimensions()
   const animationDuration = 300
-  const stashMenuTiming = useTimingTransition(isMenuStashed, {
+  const isMenuStashedDerived = useDerivedValue(() => isMenuStashed ? 1 : 0)
+  const stashMenuTiming = withTiming(isMenuStashedDerived.value, {
     duration: animationDuration,
-    easing: EasingNode.inOut(EasingNode.ease),
+    easing: Easing.inOut(Easing.ease),
   })
-  const hideLabelTiming = useTimingTransition(isLabelHidden, {
+  const hideLabelDerived = useDerivedValue(() => isLabelHidden ? 1 : 0)
+  const hideLabelTiming = withTiming(hideLabelDerived.value, {
     duration: animationDuration,
-    easing: EasingNode.inOut(EasingNode.ease),
+    easing: Easing.inOut(Easing.ease),
   })
 
-  const scaledFullX = multiply(longEdge, menuScaleTranslationFactor)
-  const stashedX = sub(longEdge, scaledFullX)
-  const stashXVector = multiply(stashedX, stashXDirection)
-  const stashXValue = interpolateNode(stashMenuTiming, {
-    inputRange: [0, 1],
-    outputRange: [0, stashXVector],
-  })
-  const stashedY = multiply(shortEdge, menuStashedYOffsetFactor)
-  const scaledStashedY = multiply(stashedY, menuScaleTranslationFactor)
-  const stashedYVector = multiply(scaledStashedY, stashYDirection)
-  const stashYValue = interpolateNode(stashMenuTiming, {
-    inputRange: [0, 1],
-    outputRange: [0, stashedYVector],
-  })
-  const hideLabelVector = multiply(
-    useScaledMenuLabelProtrusion(),
-    stashXDirection
-  )
-  const hideXValue = interpolateNode(hideLabelTiming, {
-    inputRange: [0, 1],
-    outputRange: [0, hideLabelVector],
-  })
-  const slideX = add(stashXValue, hideXValue)
+  const scaledFullX = longEdge * menuScaleTranslationFactor
+  const stashedX = longEdge - scaledFullX
+  const stashXVector = stashedX * stashXDirection
+  const stashXValue = interpolate(stashMenuTiming, [0, 1], [0, stashXVector])
+  const stashedY = shortEdge * menuStashedYOffsetFactor
+  const scaledStashedY = stashedY * menuScaleTranslationFactor
+  const stashedYVector = scaledStashedY * stashYDirection
+  const stashYValue = interpolate(stashMenuTiming, [0, 1], [0, stashedYVector])
+  const hideLabelVector = useScaledMenuLabelProtrusion() * stashXDirection
+  const hideXValue = interpolate(hideLabelTiming, [0, 1], [0, hideLabelVector])
+  const slideX = stashXValue + hideXValue
   const slideY = stashYValue
-  const scale = interpolateNode(stashMenuTiming, {
-    inputRange: [0, 1],
-    outputRange: [1, menuStashedScale],
-  })
+  const scale = interpolate(stashMenuTiming, [0, 1], [1, menuStashedScale])
   const backgroundColor = interpolateColors(stashMenuTiming, {
     inputRange: [0, 1],
     outputColorRange: [colors.pageColor, colors.inertOutline],
   })
-  const opacity = interpolateNode(stashMenuTiming, {
-    inputRange: [0, 1],
-    outputRange: [overlayOpacity, 1],
-  })
+  const opacity = interpolate(stashMenuTiming, [0, 1], [overlayOpacity, 1])
 
-  const labelCounterScale = interpolateNode(scale, {
-    inputRange: [menuStashedScale, 1],
-    outputRange: [divide(1, menuStashedScale), 0],
-  })
+  const labelCounterScale = interpolate(scale, [menuStashedScale, 1], [1 / menuStashedScale, 0])
 
   return {
     slideX,

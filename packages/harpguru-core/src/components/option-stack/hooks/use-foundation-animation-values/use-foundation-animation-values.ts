@@ -1,18 +1,17 @@
-import { withTimingTransition } from 'react-native-redash'
-import { EasingNode, Value } from 'react-native-reanimated'
-import type { Node } from 'react-native-reanimated'
+import { Easing, useSharedValue, withTiming } from 'react-native-reanimated'
+import type { SharedValue } from 'react-native-reanimated'
 
 type FoundationAnimationValues = {
-  readonly stackState: Value<number>
-  readonly stackStateTransition: Node<number>
+  readonly stackState: SharedValue<number>
+  readonly stackStateTransition: number
 }
 
 export const useFoundationAnimationValues = (): FoundationAnimationValues => {
   const animationDuration = 300
-  const stackState = new Value<number>(0)
-  const stackStateTransition = withTimingTransition(stackState, {
+  const stackState = useSharedValue<number>(0)
+  const stackStateTransition = withTiming(stackState.value, {
     duration: animationDuration,
-    easing: EasingNode.inOut(EasingNode.ease),
+    easing: Easing.inOut(Easing.ease),
   })
 
   return {

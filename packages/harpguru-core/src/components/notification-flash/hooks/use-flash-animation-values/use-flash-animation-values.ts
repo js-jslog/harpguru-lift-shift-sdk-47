@@ -1,54 +1,34 @@
-import { useTimingTransition } from 'react-native-redash'
-import { greaterThan, cond, interpolateNode, EasingNode } from 'react-native-reanimated'
-import type Animation from 'react-native-reanimated'
+import { interpolate, Easing, withTiming, useDerivedValue } from 'react-native-reanimated'
 
 import { getWindowDimensions } from '../../../../packages/get-window-dimensions'
 import { overlayOpacity } from '../../../../constants'
 
 type FlashAnimationValues = [
-  Animation.Node<number>,
-  Animation.Node<number>,
-  Animation.Node<number>,
-  Animation.Node<number>
+  number,
+  number,
+  number,
+  number,
 ]
 
 export const useFlashAnimationValues = (
   shouldDisplay: boolean
 ): FlashAnimationValues => {
-  const flashAnimationValue = useTimingTransition(shouldDisplay, {
+  const derivedValue = useDerivedValue(() => shouldDisplay ? 1 : 0)
+  const timingValue = withTiming(derivedValue.value, {
     duration: 500,
-    easing: EasingNode.inOut(EasingNode.ease),
+    easing: Easing.inOut(Easing.ease),
   })
 
   const { longEdge } = getWindowDimensions()
   const guaranteeOffScreenWidth = longEdge
 
-  const messageOpacity = interpolateNode(flashAnimationValue, {
-    inputRange: [0, 1],
-    outputRange: [0, overlayOpacity],
-  })
+  const messageOpacity = interpolate(timingValue, [0, 1], [0, overlayOpacity])
   const explosionOpacity = shouldDisplay
-    ? interpolateNode(flashAnimationValue, {
-      inputRange: [0, 1],
-      outputRange: [overlayOpacity, 0],
-    })
-    : interpolateNode(flashAnimationValue, {
-      inputRange: [0, 1],
-      outputRange: [0, 0],
-    })
+    ? interpolate(timingValue, [0, 1], [overlayOpacity, 0])
+    : interpolate(timingValue, [0, 1], [0, 0])
   const messageScale = shouldDisplay
-    ? interpolateNode(flashAnimationValue, {
-      inputRange: [0, 1],
-      outputRange: [1, 2],
-    })
-    : interpolateNode(flashAnimationValue, {
-      inputRange: [0, 1],
-      outputRange: [3, 2],
-    })
-  const translateX = cond(
-    greaterThan(flashAnimationValue, 0),
-    0,
-    guaranteeOffScreenWidth
-  )
+    ? interpolate(timingValue, [0, 1], [1, 2])
+    : interpolate(timingValue, [0, 1], [3, 2])
+  const translateX = (timingValue > 0 ? 0 : guaranteeOffScreenWidth)
   return [translateX, messageScale, explosionOpacity, messageOpacity]
 }
