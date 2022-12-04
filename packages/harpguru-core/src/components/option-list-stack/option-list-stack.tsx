@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { useDerivedValue } from 'react-native-reanimated'
 import type { OptionStackProps } from '../option-stack'
 import { OptionList } from '../option-list'
 import type { WithTransition } from '../../types'
@@ -10,17 +11,14 @@ export const OptionListStack = ({
   transitionValue,
 }: OptionStackProps & WithTransition): React.ReactElement => {
   const listStack = optionPropsz.map((optionProps, index, array) => {
+    const derivedTransitionValue = useDerivedValue(() => useInterpolateOptionStackTransitionValue(array.length, index, transitionValue.value))
     return (
       <OptionList
         useItems={optionProps.useItems}
         twoColumns={optionProps.twoColumns}
         useLeftColumnLabel={optionProps.useLeftColumnLabel}
         useRightColumnLabel={optionProps.useRightColumnLabel}
-        transitionValue={useInterpolateOptionStackTransitionValue(
-          array.length,
-          index,
-          transitionValue
-        )}
+        transitionValue={derivedTransitionValue}
         key={index}
       />
     )

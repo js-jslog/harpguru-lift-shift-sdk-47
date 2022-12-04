@@ -1,4 +1,4 @@
-import Animated, { add } from 'react-native-reanimated'
+import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
@@ -39,16 +39,17 @@ export const MenuAccessOpen = ({
     [1, 5],
     TapAnimationTypes.Unsafe
   )
-  const totalScaleValue = add(tapAnimationValue, labelCounterScale)
+  const animatedStyle = useAnimatedStyle(() => {
+    const totalScaleValue = tapAnimationValue.value + labelCounterScale.value
+    return {transform: [{ scale: totalScaleValue}]}
+  })
 
   return (
     <TapGestureHandler onHandlerStateChange={handleTapStateChange}>
       <View style={style}>
         <Animated.View
           style={[
-            {
-              transform: [{ scale: totalScaleValue }],
-            },
+            animatedStyle
           ]}
         >
           {children}

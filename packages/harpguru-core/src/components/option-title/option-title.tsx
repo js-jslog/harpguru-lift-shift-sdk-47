@@ -28,7 +28,7 @@ export const OptionTitle = ({
     },
   })
   return (
-    <Animated.View style={[wrapper, { opacity: transitionValue }]}>
+    <Animated.View style={[wrapper, { opacity: transitionValue.value }]}>
       <View style={gutterSpacer}>{title}</View>
     </Animated.View>
   )

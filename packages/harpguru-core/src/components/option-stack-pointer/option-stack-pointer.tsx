@@ -56,7 +56,7 @@ export const OptionStackPointer = (
   return (
     <Animated.View
       pointerEvents={pointerEvents}
-      style={[{ opacity }, positionStyle]}
+      style={[{ opacity: opacity.value }, positionStyle]}
     >
       <TouchableOpacity onPress={onPress}>
         <AntDesign name={icon} size={largeFont} color={colors.inertOutline} />

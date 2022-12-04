@@ -1,5 +1,5 @@
 import { useGlobal } from 'reactn'
-import Animated from 'react-native-reanimated'
+import Animated, {useAnimatedStyle} from 'react-native-reanimated'
 import { TapGestureHandler } from 'react-native-gesture-handler'
 import { View } from 'react-native'
 import React from 'react'
@@ -21,6 +21,9 @@ export const MenuAccessClose = ({
     [1, 2],
     TapAnimationTypes.Unsafe
   )
+  const animatedStyle = useAnimatedStyle(() => {
+    return { transform: [{ scale: tapAnimationValue.value }]}
+  })
 
   return (
     <TapGestureHandler onHandlerStateChange={handleTapStateChange}>
@@ -35,9 +38,7 @@ export const MenuAccessClose = ({
       >
         <Animated.View
           style={[
-            {
-              transform: [{ scale: tapAnimationValue }],
-            },
+            animatedStyle
           ]}
         >
           <AntDesign

@@ -2,9 +2,10 @@ import {
   withTiming,
   Easing,
   interpolate,
-  interpolateColors,
+  interpolateColor,
   useDerivedValue,
 } from 'react-native-reanimated'
+import type { SharedValue } from 'react-native-reanimated'
 
 import { useScaledMenuLabelProtrusion } from '../use-scaled-menu-label-protrusion'
 import { getColors } from '../../utils'
@@ -18,12 +19,12 @@ import {
 } from '../../constants'
 
 type MenuAnimationValues = {
-  readonly slideX: number
-  readonly slideY: number
-  readonly scale: number
-  readonly backgroundColor: string,
-  readonly opacity: number
-  readonly labelCounterScale: number
+  readonly slideX: SharedValue<number>
+  readonly slideY: SharedValue<number>
+  readonly scale: SharedValue<number>
+  readonly opacity: SharedValue<number>
+  readonly backgroundColor: SharedValue<string>
+  readonly labelCounterScale: SharedValue<number>
 }
 
 export const useMenuAnimationValues = (
@@ -63,37 +64,38 @@ export const useMenuAnimationValues = (
 
   const { shortEdge, longEdge } = getWindowDimensions()
   const animationDuration = 300
-  const isMenuStashedDerived = useDerivedValue(() => isMenuStashed ? 1 : 0)
-  const stashMenuTiming = withTiming(isMenuStashedDerived.value, {
-    duration: animationDuration,
-    easing: Easing.inOut(Easing.ease),
-  })
-  const hideLabelDerived = useDerivedValue(() => isLabelHidden ? 1 : 0)
-  const hideLabelTiming = withTiming(hideLabelDerived.value, {
-    duration: animationDuration,
-    easing: Easing.inOut(Easing.ease),
+  const stashMenuTiming = useDerivedValue(() => {
+    return withTiming((isMenuStashed ? 1 : 0), {
+      duration: animationDuration,
+      easing: Easing.inOut(Easing.ease),
+    })
   })
 
-  const scaledFullX = longEdge * menuScaleTranslationFactor
-  const stashedX = longEdge - scaledFullX
-  const stashXVector = stashedX * stashXDirection
-  const stashXValue = interpolate(stashMenuTiming, [0, 1], [0, stashXVector])
-  const stashedY = shortEdge * menuStashedYOffsetFactor
-  const scaledStashedY = stashedY * menuScaleTranslationFactor
-  const stashedYVector = scaledStashedY * stashYDirection
-  const stashYValue = interpolate(stashMenuTiming, [0, 1], [0, stashedYVector])
   const hideLabelVector = useScaledMenuLabelProtrusion() * stashXDirection
-  const hideXValue = interpolate(hideLabelTiming, [0, 1], [0, hideLabelVector])
-  const slideX = stashXValue + hideXValue
-  const slideY = stashYValue
-  const scale = interpolate(stashMenuTiming, [0, 1], [1, menuStashedScale])
-  const backgroundColor = interpolateColors(stashMenuTiming, {
-    inputRange: [0, 1],
-    outputColorRange: [colors.pageColor, colors.inertOutline],
+  const slideX = useDerivedValue(() => {
+    const hideLabelTiming = withTiming((isLabelHidden ? 1 : 0), {
+      duration: animationDuration,
+      easing: Easing.inOut(Easing.ease),
+    })
+    const scaledFullX = longEdge * menuScaleTranslationFactor
+    const stashedX = longEdge - scaledFullX
+    const stashXVector = stashedX * stashXDirection
+    const stashXValue = interpolate(stashMenuTiming.value, [0, 1], [0, stashXVector])
+    const hideXValue = interpolate(hideLabelTiming, [0, 1], [0, hideLabelVector])
+    return stashXValue + hideXValue
+  }) // }, TODO: add dependencies? )
+  const slideY = useDerivedValue(() => {
+    const stashedY = shortEdge * menuStashedYOffsetFactor
+    const scaledStashedY = stashedY * menuScaleTranslationFactor
+    const stashedYVector = scaledStashedY * stashYDirection
+    const stashYValue = interpolate(stashMenuTiming.value, [0, 1], [0, stashedYVector])
+    return stashYValue
   })
-  const opacity = interpolate(stashMenuTiming, [0, 1], [overlayOpacity, 1])
+  const backgroundColor = useDerivedValue(() => interpolateColor(stashMenuTiming.value, [0, 1], [colors.pageColor, colors.inertOutline]))
+  const opacity = useDerivedValue(() => interpolate(stashMenuTiming.value, [0, 1], [overlayOpacity, 1]))
 
-  const labelCounterScale = interpolate(scale, [menuStashedScale, 1], [1 / menuStashedScale, 0])
+  const scale = useDerivedValue(() => interpolate(stashMenuTiming.value, [0, 1], [1, menuStashedScale]))
+  const labelCounterScale = useDerivedValue(() => interpolate(scale.value, [menuStashedScale, 1], [1 / menuStashedScale, 0]))
 
   return {
     slideX,

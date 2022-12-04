@@ -1,4 +1,5 @@
 import { Easing, interpolate, useDerivedValue, withTiming } from 'react-native-reanimated'
+import type { SharedValue } from 'react-native-reanimated'
 import { State } from 'react-native-gesture-handler'
 import type { TapGestureHandlerStateChangeEvent } from 'react-native-gesture-handler'
 import React from 'react'
@@ -13,18 +14,17 @@ export const useScaleAndCallbackOnTap = (
   scaleIn: [number, number],
   scaleOut: [number, number],
   tapAnimationType: TapAnimationTypes
-): [number, TapEventHandler] => {
+): [SharedValue<number>, TapEventHandler] => {
   const [isTapped, setIsTapped] = React.useState(false)
   const [isTimeForCallback, setIsTimeForCallback] = React.useState(false)
   const shouldAnimateOut = tapAnimationType === TapAnimationTypes.Unsafe
-  const isTappedDerived = useDerivedValue(() => {
-    return (isTapped ? 1 : 0)
+  const animationValue = useDerivedValue(() => {
+    const timingValue = withTiming((isTapped ? 1 : 0), {
+      duration: tapAnimationDuration,
+      easing: Easing.inOut(Easing.circle),
+    })
+    return interpolate(timingValue, [0, 1], (isTapped ? scaleIn : scaleOut))
   })
-  const timingValue = withTiming(isTappedDerived.value, {
-    duration: tapAnimationDuration,
-    easing: Easing.inOut(Easing.circle),
-  })
-  const animationValue = interpolate(timingValue, [0, 1], (isTapped ? scaleIn : scaleOut))
   const handleTapStateChange = (event: TapGestureHandlerStateChangeEvent) => {
     const {
       nativeEvent: { state },
