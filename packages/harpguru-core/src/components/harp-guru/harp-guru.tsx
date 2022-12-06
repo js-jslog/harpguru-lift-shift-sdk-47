@@ -1,6 +1,6 @@
 import { useWindowDimensions } from 'use-dimensions'
 import { createProvider } from 'reactn'
-import Animated, { withTiming, Easing, interpolate, useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
+import Animated, { withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import type { ReactElement } from 'react'
@@ -22,18 +22,15 @@ export const HarpGuru = (): ReactElement => {
 
   const pageOnDisplay = useSharedValue<PageNumber>(1)
   const page1YAnimationStyle = useAnimatedStyle(() => {
-    const timingValue = withTiming(pageOnDisplay.value, {
-      duration: 300,
-      easing: Easing.inOut(Easing.ease)
+    // TODO: Make sure that 3 is far enough off the screen for there to
+    // not be any spillover when things like the notification flashes are
+    // in effect.
+    // I've been struggling to get interpolation to work, and spring is
+    // really simple and looks good so I don't want to waste time with
+    // other functions I might not need anywhere else.
+    const translateY = withSpring(pageOnDisplay.value === 1 ? 0 : offScreen * 3, {
+      overshootClamping: true,
     })
-    // The strange decimal stopoff on the way to the next integer
-    // in each of these is to allow the animation to appear to
-    // take the page just barely out of frame, but to then take
-    // it a great distance away at the end. This means the animation
-    // is as smooth as possible, but the page is well out of the
-    // way in case any animated objects move outside of it's page
-    // frame towards interferring with the next page.
-    const translateY = interpolate(timingValue, [1, 1.9, 2], [0, offScreen, offScreen * 10])
     return { transform: [{ translateY }]}
   })
 

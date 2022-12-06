@@ -107,6 +107,9 @@ export enum CellStates {
 // passed to the hook which uses this enum is updating
 // the  harpface, particularly if it is creating a
 // harp with fewer rows.
+// TODO: Check whether this problem presents itself
+// again before concluding that I don't need these
+// anymore and deleting them.
 export enum TapAnimationTypes {
   Safe,
   Unsafe,

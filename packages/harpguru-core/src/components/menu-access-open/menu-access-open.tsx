@@ -1,9 +1,8 @@
 import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 import { TapGestureHandler } from 'react-native-gesture-handler'
-import { View, StyleSheet } from 'react-native'
+import { StyleSheet } from 'react-native'
 import React from 'react'
 
-import { TapAnimationTypes } from '../../types'
 import type { MenuProps, ChildrenProps } from '../../types'
 import {
   useScaleAndCallbackOnTap,
@@ -33,20 +32,18 @@ export const MenuAccessOpen = ({
     },
   })
 
-  const [tapAnimationValue, handleTapStateChange] = useScaleAndCallbackOnTap(
+  const [tapAnimationValue, gestureHandler] = useScaleAndCallbackOnTap(
     openCloseMenu,
-    [1, 5],
-    [1, 5],
-    TapAnimationTypes.Unsafe
   )
+
   const animatedStyle = useAnimatedStyle(() => {
     const totalScaleValue = tapAnimationValue.value + labelCounterScale.value
     return {transform: [{ scale: totalScaleValue}]}
   })
 
   return (
-    <TapGestureHandler onHandlerStateChange={handleTapStateChange}>
-      <View style={style}>
+    <TapGestureHandler onGestureEvent={gestureHandler}>
+      <Animated.View style={style}>
         <Animated.View
           style={[
             animatedStyle
@@ -54,7 +51,7 @@ export const MenuAccessOpen = ({
         >
           {children}
         </Animated.View>
-      </View>
+      </Animated.View>
     </TapGestureHandler>
   )
 }
