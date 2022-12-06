@@ -6,7 +6,6 @@ import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
 
 import { getColors } from '../../utils'
-import { TapAnimationTypes } from '../../types'
 import type { MenuProps } from '../../types'
 import { useScaleAndCallbackOnTap } from '../../hooks'
 
@@ -17,9 +16,6 @@ export const MenuAccessClose = ({
 
   const [tapAnimationValue, handleTapStateChange] = useScaleAndCallbackOnTap(
     openCloseMenu,
-    [1, 2],
-    [1, 2],
-    TapAnimationTypes.Unsafe
   )
   const animatedStyle = useAnimatedStyle(() => {
     return { transform: [{ scale: tapAnimationValue.value }]}
