@@ -1,5 +1,3 @@
-import 'react-native-gesture-handler'
-
 import { useWindowDimensions } from 'use-dimensions'
 import { createProvider } from 'reactn'
 import Animated, { withTiming, Easing, interpolate, useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
@@ -12,6 +10,7 @@ import type { PageNumber } from '../../types'
 import { getWindowDimensions } from '../../packages/get-window-dimensions'
 
 import { getInitialGlobalState } from './utils'
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
 
 const Provider1 = createProvider(getInitialGlobalState(1))
 const Provider2 = createProvider(getInitialGlobalState(2))
@@ -39,6 +38,7 @@ export const HarpGuru = (): ReactElement => {
   })
 
   return (
+    <GestureHandlerRootView style={{flex: 1}}>
     <>
       <Provider2>
         <Animated.View
@@ -60,5 +60,6 @@ export const HarpGuru = (): ReactElement => {
         </Animated.View>
       </Provider1>
     </>
+    </GestureHandlerRootView>
   )
 }

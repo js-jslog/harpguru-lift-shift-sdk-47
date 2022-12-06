@@ -1,5 +1,3 @@
-import 'react-native-gesture-handler'
-
 import type { SharedValue } from 'react-native-reanimated'
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
