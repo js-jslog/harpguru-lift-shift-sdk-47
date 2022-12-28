@@ -71,19 +71,24 @@ export const useMenuAnimationValues = (
     })
   })
 
-  const hideLabelVector = useScaledMenuLabelProtrusion() * stashXDirection
-  const slideX = useDerivedValue(() => {
-    const hideLabelTiming = withTiming((isLabelHidden ? 1 : 0), {
+  const hideLabelTiming = useDerivedValue(() => {
+    return withTiming((isLabelHidden ? 1 : 0), {
       duration: animationDuration,
       easing: Easing.inOut(Easing.ease),
     })
+  })
+  const hideLabelVector = useScaledMenuLabelProtrusion() * stashXDirection
+
+  const slideX = useDerivedValue(() => {
     const scaledFullX = longEdge * menuScaleTranslationFactor
     const stashedX = longEdge - scaledFullX
     const stashXVector = stashedX * stashXDirection
     const stashXValue = interpolate(stashMenuTiming.value, [0, 1], [0, stashXVector])
-    const hideXValue = interpolate(hideLabelTiming, [0, 1], [0, hideLabelVector])
+    const hideXValue = interpolate(hideLabelTiming.value, [0, 1], [0, hideLabelVector])
     return stashXValue + hideXValue
   }) // }, TODO: add dependencies? )
+
+
   const slideY = useDerivedValue(() => {
     const stashedY = shortEdge * menuStashedYOffsetFactor
     const scaledStashedY = stashedY * menuScaleTranslationFactor
