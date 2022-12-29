@@ -21,7 +21,7 @@ export const useOptionStackPointerProperties = (
     stateValue.value = stateValue.value - 1
   }
   const nextInStack = (): void => {
-    stateValue.value = stateValue.value - 1
+    stateValue.value = stateValue.value + 1
   }
   const prevPointerEvents = (stateValue.value === 0 ? 'none' : 'auto')
   const nextPointerEvents = (stateValue.value === stackLength -1 ? 'none' : 'auto')
