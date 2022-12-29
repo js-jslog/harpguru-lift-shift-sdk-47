@@ -1,7 +1,6 @@
 import { useGlobal } from 'reactn'
 import Animated, {useAnimatedStyle} from 'react-native-reanimated'
 import { TapGestureHandler } from 'react-native-gesture-handler'
-import { View } from 'react-native'
 import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
 
@@ -14,7 +13,7 @@ export const MenuAccessClose = ({
 }: Pick<MenuProps, 'openCloseMenu'>): React.ReactElement => {
   const [staticSizes] = useGlobal('staticSizes')
 
-  const [tapAnimationValue, handleTapStateChange] = useScaleAndCallbackOnTap(
+  const [tapAnimationValue, gestureHandler] = useScaleAndCallbackOnTap(
     openCloseMenu,
   )
   const animatedStyle = useAnimatedStyle(() => {
@@ -22,8 +21,8 @@ export const MenuAccessClose = ({
   })
 
   return (
-    <TapGestureHandler onHandlerStateChange={handleTapStateChange}>
-      <View
+    <TapGestureHandler onGestureEvent={gestureHandler}>
+      <Animated.View
         style={{
           position: 'absolute',
           top: 0,
@@ -43,7 +42,7 @@ export const MenuAccessClose = ({
             color={getColors().inertOutline}
           />
         </Animated.View>
-      </View>
+      </Animated.View>
     </TapGestureHandler>
   )
 }
