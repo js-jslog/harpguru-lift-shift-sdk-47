@@ -1,4 +1,4 @@
-import Animated, { useAnimatedStyle } from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useAnimatedProps } from 'react-native-reanimated'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import React from 'react'
 import { AntDesign } from '@expo/vector-icons'
@@ -31,12 +31,17 @@ export const OptionStackPointer = (
   const colors = getColors()
 
   const { direction } = props
-  const pointerEvents =
-    direction === 'NEXT' ? nextPointerEvents : prevPointerEvents
   const opacity = direction === 'NEXT' ? nextPointerOpacity : prevPointerOpacity
   const onPress = direction === 'NEXT' ? nextInStack : prevInStack
   const icon = direction === 'NEXT' ? 'up' : 'down'
 
+  const animatedProps = useAnimatedProps(() => {
+    const pointerEvents =
+      direction === 'NEXT' ? nextPointerEvents.value : prevPointerEvents.value
+    return {
+      pointerEvents
+    }
+  })
   const animatedStyle = useAnimatedStyle(() => {
     return {
       opacity: opacity.value,
@@ -49,7 +54,7 @@ export const OptionStackPointer = (
 
   return (
     <Animated.View
-      pointerEvents={pointerEvents}
+      animatedProps={animatedProps}
       style={[animatedStyle]}
     >
       <TouchableOpacity onPress={onPress}>

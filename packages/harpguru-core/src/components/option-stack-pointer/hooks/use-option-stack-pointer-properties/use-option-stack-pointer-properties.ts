@@ -7,8 +7,8 @@ import { useInterpolateOptionStackTransitionValue } from '../../../../hooks'
 type PointerProperties = {
   readonly prevInStack: () => void
   readonly nextInStack: () => void
-  readonly prevPointerEvents: 'none' | 'auto'
-  readonly nextPointerEvents: 'none' | 'auto'
+  readonly prevPointerEvents: SharedValue<'none' | 'auto'>
+  readonly nextPointerEvents: SharedValue<'none' | 'auto'>
   readonly prevPointerOpacity: SharedValue<number>
   readonly nextPointerOpacity: SharedValue<number>
 }
@@ -23,8 +23,8 @@ export const useOptionStackPointerProperties = (
   const nextInStack = (): void => {
     stateValue.value = stateValue.value + 1
   }
-  const prevPointerEvents = (stateValue.value === 0 ? 'none' : 'auto')
-  const nextPointerEvents = (stateValue.value === stackLength -1 ? 'none' : 'auto')
+  const prevPointerEvents = useDerivedValue(() => (stateValue.value === 0 ? 'none' : 'auto'), [stateValue.value])
+  const nextPointerEvents = useDerivedValue(() => (stateValue.value === stackLength -1 ? 'none' : 'auto'), [stateValue.value])
   const prevPointerOpacity = useDerivedValue(() => interpolate(useInterpolateOptionStackTransitionValue(stackLength, 0, transitionValue.value), [0, 1], [1, 0]))
   const nextPointerOpacity = useDerivedValue(() => interpolate(useInterpolateOptionStackTransitionValue(stackLength, stackLength - 1, transitionValue.value), [0, 1], [1, 0]))
 
