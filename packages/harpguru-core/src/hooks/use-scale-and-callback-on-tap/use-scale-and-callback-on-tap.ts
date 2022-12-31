@@ -7,16 +7,14 @@ type GestureHandler = (arg0: GestureEvent<TapGestureHandlerEventPayload>) => voi
 
 export const useScaleAndCallbackOnTap = (
   callback: () => void,
-  // TODO: Consider putting the scale in & scale out
-  // params back. These might still be useful for the
-  // menu close component.
+  inflation: number
 ): [SharedValue<number>, GestureHandler] => {
   const [isTapped, setIsTapped] = React.useState(false)
   const setIsTappedWrapper = (isTapped: boolean) => {
     setIsTapped(isTapped)
   }
   const animationValue = useDerivedValue(() => {
-    return withSpring((isTapped ? 50 : 1))
+    return withSpring((isTapped ? inflation : 1))
   }, [isTapped])
 
   const gestureHandler = useAnimatedGestureHandler<GestureEvent<TapGestureHandlerEventPayload>>({
