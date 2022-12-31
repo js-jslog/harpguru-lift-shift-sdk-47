@@ -1,6 +1,6 @@
 import { useWindowDimensions } from 'use-dimensions'
 import { createProvider } from 'reactn'
-import Animated, { withSpring, useSharedValue, useAnimatedStyle } from 'react-native-reanimated'
+import Animated, { useSharedValue, useAnimatedStyle, interpolate, useDerivedValue, withTiming } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import type { ReactElement } from 'react'
@@ -21,16 +21,9 @@ export const HarpGuru = (): ReactElement => {
   const { shortEdge: offScreen } = getWindowDimensions()
 
   const pageOnDisplay = useSharedValue<PageNumber>(1)
+  const pageDropTimingValue = useDerivedValue(() => withTiming(pageOnDisplay.value))
   const page1YAnimationStyle = useAnimatedStyle(() => {
-    // TODO: Make sure that 3 is far enough off the screen for there to
-    // not be any spillover when things like the notification flashes are
-    // in effect.
-    // I've been struggling to get interpolation to work, and spring is
-    // really simple and looks good so I don't want to waste time with
-    // other functions I might not need anywhere else.
-    const translateY = withSpring(pageOnDisplay.value === 1 ? 0 : offScreen * 3, {
-      overshootClamping: true,
-    })
+    const translateY = interpolate(pageDropTimingValue.value, [1, 1.9, 2], [0, offScreen, offScreen * 10])
     return { transform: [{ translateY }]}
   })
 
