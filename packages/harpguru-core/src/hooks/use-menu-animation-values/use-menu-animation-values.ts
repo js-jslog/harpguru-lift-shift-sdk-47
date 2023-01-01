@@ -86,7 +86,7 @@ export const useMenuAnimationValues = (
     const stashXValue = interpolate(stashMenuTiming.value, [0, 1], [0, stashXVector])
     const hideXValue = interpolate(hideLabelTiming.value, [0, 1], [0, hideLabelVector])
     return stashXValue + hideXValue
-  }) // }, TODO: add dependencies? )
+  })
 
 
   const slideY = useDerivedValue(() => {
