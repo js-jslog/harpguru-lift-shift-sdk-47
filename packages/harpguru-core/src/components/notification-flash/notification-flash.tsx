@@ -77,18 +77,21 @@ export const NotificationFlash = ({
   return (
     <>
       <Animated.View
+        pointerEvents='none'
         style={[
           styles.pinkExplosion,
           animatedStyle1
         ]}
       />
       <Animated.View
+        pointerEvents='none'
         style={[
           styles.messageUnderlay,
           animatedStyle2
         ]}
       />
       <Animated.View
+        pointerEvents='none'
         style={[
           styles.message,
           animatedStyle3
