@@ -23,8 +23,8 @@ export const useOptionStackPointerProperties = (
   const nextInStack = (): void => {
     stateValue.value = stateValue.value + 1
   }
-  const prevPointerEvents = useDerivedValue(() => (stateValue.value === 0 ? 'none' : 'auto'), [stateValue.value])
-  const nextPointerEvents = useDerivedValue(() => (stateValue.value === stackLength -1 ? 'none' : 'auto'), [stateValue.value])
+  const prevPointerEvents = useDerivedValue(() => (stateValue.value === 0 ? 'none' : 'auto'))
+  const nextPointerEvents = useDerivedValue(() => (stateValue.value === stackLength -1 ? 'none' : 'auto'))
   const prevPointerOpacity = useDerivedValue(() => interpolate(useInterpolateOptionStackTransitionValue(stackLength, 0, transitionValue.value), [0, 1], [1, 0]))
   const nextPointerOpacity = useDerivedValue(() => interpolate(useInterpolateOptionStackTransitionValue(stackLength, stackLength - 1, transitionValue.value), [0, 1], [1, 0]))
 
