@@ -1,4 +1,4 @@
-import Animated, {useAnimatedStyle} from 'react-native-reanimated'
+import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import type { ReactElement } from 'react'
@@ -16,12 +16,8 @@ export const NotificationFlash = ({
   shouldDisplay,
   children,
 }: NotificationFlashProps): ReactElement => {
-  const [
-    translateX,
-    messageScale,
-    explosionOpacity,
-    messageOpacity,
-  ] = useFlashAnimationValues(shouldDisplay)
+  const [translateX, messageScale, explosionOpacity, messageOpacity] =
+    useFlashAnimationValues(shouldDisplay)
 
   const colors = getColors()
 
@@ -47,14 +43,14 @@ export const NotificationFlash = ({
 
   const animatedStyle1 = useAnimatedStyle(() => {
     return {
-      transform: [{translateX: translateX.value}],
-      opacity: explosionOpacity.value
+      transform: [{ translateX: translateX.value }],
+      opacity: explosionOpacity.value,
     }
   })
   const animatedStyle2 = useAnimatedStyle(() => {
     return {
-      transform: [{translateX: translateX.value}],
-      opacity: messageOpacity.value
+      transform: [{ translateX: translateX.value }],
+      opacity: messageOpacity.value,
     }
   })
   const animatedStyle3 = useAnimatedStyle(() => {
@@ -65,35 +61,26 @@ export const NotificationFlash = ({
         // I do not have a good explanation for this and it doesn't seem
         // to conform to the observation of the other comment added in
         // this commit.
-        {scale: messageScale.value},
-        {translateX: translateX.value}
+        { scale: messageScale.value },
+        { translateX: translateX.value },
       ],
-      opacity: messageOpacity.value
+      opacity: messageOpacity.value,
     }
   })
 
   return (
     <>
       <Animated.View
-        pointerEvents='none'
-        style={[
-          styles.pinkExplosion,
-          animatedStyle1
-        ]}
+        pointerEvents="none"
+        style={[styles.pinkExplosion, animatedStyle1]}
       />
       <Animated.View
-        pointerEvents='none'
-        style={[
-          styles.messageUnderlay,
-          animatedStyle2
-        ]}
+        pointerEvents="none"
+        style={[styles.messageUnderlay, animatedStyle2]}
       />
       <Animated.View
-        pointerEvents='none'
-        style={[
-          styles.message,
-          animatedStyle3
-        ]}
+        pointerEvents="none"
+        style={[styles.message, animatedStyle3]}
       >
         {children}
       </Animated.View>

@@ -15,13 +15,8 @@ export const Menu = ({
   stashPosition,
   children,
 }: MenuProps & ChildrenProps): React.ReactElement => {
-  const {
-    slideX,
-    slideY,
-    scale,
-    backgroundColor,
-    opacity,
-  } = useMenuAnimationValues(isMenuStashed, isLabelHidden, stashPosition)
+  const { slideX, slideY, scale, backgroundColor, opacity } =
+    useMenuAnimationValues(isMenuStashed, isLabelHidden, stashPosition)
   const scaledLabelProtrusion = useScaledMenuLabelProtrusion()
 
   const [dynamicSizes] = useGlobal('dynamicSizes')
@@ -51,7 +46,7 @@ export const Menu = ({
         { translateY: slideY.value },
         { translateX: slideX.value },
         { scale: scale.value },
-      ]
+      ],
     }
   })
 
@@ -63,18 +58,8 @@ export const Menu = ({
   })
 
   return (
-    <Animated.View
-      style={[
-        styles.animated,
-        animatedStyle1
-      ]}
-    >
-      <Animated.View
-        style={[
-          styles.overlay,
-          animatedStyle2
-        ]}
-      >
+    <Animated.View style={[styles.animated, animatedStyle1]}>
+      <Animated.View style={[styles.overlay, animatedStyle2]}>
         {children}
       </Animated.View>
     </Animated.View>

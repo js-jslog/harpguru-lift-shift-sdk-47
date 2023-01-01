@@ -93,26 +93,25 @@ const ActivityCell = ({
   })
 
   const derivedValue = useDerivedValue(() => {
-    return withTiming((isActive ? 1 : 0), {
+    return withTiming(isActive ? 1 : 0, {
       duration: 200,
-      easing: Easing.inOut(Easing.circle)
+      easing: Easing.inOut(Easing.circle),
     })
   })
 
   const animatedStyle = useAnimatedStyle(() => {
-    const translateX = interpolate(derivedValue.value, [0, 1], [legendWidth *-1, 0])
-    return { transform: [{translateX}]}
+    const translateX = interpolate(
+      derivedValue.value,
+      [0, 1],
+      [legendWidth * -1, 0]
+    )
+    return { transform: [{ translateX }] }
   })
 
   return (
     <>
       <View style={styles.cell}>
-        <Animated.View
-          style={[
-            styles.cellColor,
-            animatedStyle,
-          ]}
-        />
+        <Animated.View style={[styles.cellColor, animatedStyle]} />
         <RenderedTone
           toneTuples={toneTuples}
           isActive={isActive}

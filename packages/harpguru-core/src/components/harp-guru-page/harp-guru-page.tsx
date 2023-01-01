@@ -93,7 +93,7 @@ export const HarpGuruPage = ({
         thisPage={thisPage}
         totalPages={2}
         stashPosition={MenuStashPosition.Seventh}
-        getNextPage={() => pageOnDisplay.value = nextPageNumberMap[thisPage]}
+        getNextPage={() => (pageOnDisplay.value = nextPageNumberMap[thisPage])}
       />
       <ToggleBufferFlusher />
       <CallbackOnSourceGlobalProps />

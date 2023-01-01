@@ -11,7 +11,13 @@ export const OptionListStack = ({
   transitionValue,
 }: OptionStackProps & WithTransition): React.ReactElement => {
   const listStack = optionPropsz.map((optionProps, index, array) => {
-    const derivedTransitionValue = useDerivedValue(() => useInterpolateOptionStackTransitionValue(array.length, index, transitionValue.value))
+    const derivedTransitionValue = useDerivedValue(() =>
+      useInterpolateOptionStackTransitionValue(
+        array.length,
+        index,
+        transitionValue.value
+      )
+    )
     return (
       <OptionList
         useItems={optionProps.useItems}
