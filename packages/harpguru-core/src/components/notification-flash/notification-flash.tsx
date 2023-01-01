@@ -65,8 +65,6 @@ export const NotificationFlash = ({
         // I do not have a good explanation for this and it doesn't seem
         // to conform to the observation of the other comment added in
         // this commit.
-        // TODO: Check whether this is still a thing, and check that this
-        // new syntax is actually working.
         {scale: messageScale.value},
         {translateX: translateX.value}
       ],
