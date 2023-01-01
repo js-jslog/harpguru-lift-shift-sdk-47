@@ -93,6 +93,7 @@ export const HarpGuruPage = ({
         thisPage={thisPage}
         totalPages={2}
         stashPosition={MenuStashPosition.Seventh}
+        /* eslint-disable prefer-destructuring */
         getNextPage={() => (pageOnDisplay.value = nextPageNumberMap[thisPage])}
       />
       <ToggleBufferFlusher />
