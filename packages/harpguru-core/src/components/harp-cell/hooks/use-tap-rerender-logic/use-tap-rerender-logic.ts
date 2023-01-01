@@ -1,4 +1,5 @@
 import { useGlobal } from 'reactn'
+import { runOnJS, useAnimatedGestureHandler } from 'react-native-reanimated'
 import type {
   GestureEvent,
   TapGestureHandlerEventPayload,
@@ -9,7 +10,6 @@ import { DegreeIds } from 'harpparts'
 import { useAddBufferedActivityToggle } from '../use-add-buffered-activity-toggle'
 import { CellStates } from '../../../../types'
 import { tapAnimationDuration } from '../../../../constants'
-import { runOnJS, useAnimatedGestureHandler } from 'react-native-reanimated'
 
 type GestureHandler = (
   arg0: GestureEvent<TapGestureHandlerEventPayload>

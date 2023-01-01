@@ -1,6 +1,6 @@
+import { useDerivedValue } from 'react-native-reanimated'
 import React from 'react'
 
-import { useDerivedValue } from 'react-native-reanimated'
 import type { OptionStackProps } from '../option-stack'
 import { OptionList } from '../option-list'
 import type { WithTransition } from '../../types'

@@ -7,6 +7,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from 'react-native-reanimated'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import type { ReactElement } from 'react'
@@ -16,7 +17,6 @@ import type { PageNumber } from '../../types'
 import { getWindowDimensions } from '../../packages/get-window-dimensions'
 
 import { getInitialGlobalState } from './utils'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const Provider1 = createProvider(getInitialGlobalState(1))
 const Provider2 = createProvider(getInitialGlobalState(2))
