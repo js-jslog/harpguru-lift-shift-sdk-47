@@ -32,9 +32,10 @@ export const MenuAccessOpen = ({
     },
   })
 
+  const inflation = 50
   const [tapAnimationValue, gestureHandler] = useScaleAndCallbackOnTap(
     openCloseMenu,
-    50
+    inflation
   )
 
   const animatedStyle = useAnimatedStyle(() => {

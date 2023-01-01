@@ -13,9 +13,10 @@ export const MenuAccessClose = ({
 }: Pick<MenuProps, 'openCloseMenu'>): React.ReactElement => {
   const [staticSizes] = useGlobal('staticSizes')
 
+  const inflation = 5
   const [tapAnimationValue, gestureHandler] = useScaleAndCallbackOnTap(
     openCloseMenu,
-    5,
+    inflation,
   )
   const animatedStyle = useAnimatedStyle(() => {
     return { transform: [{ scale: tapAnimationValue.value }]}
