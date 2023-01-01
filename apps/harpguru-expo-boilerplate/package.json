@@ -11,6 +11,7 @@
     "eject": "expo eject",
     "tsc": "tsc",
     "lint": "eslint --ext .ts,.tsx .",
+    "lint-fix": "eslint --fix --ext .ts,.tsx .",
     "lint-file": "eslint --ext .ts,.tsx",
     "ci": "yarn lint && yarn tsc",
     "build-ios-archive": "expo build:ios -t archive --clear-credentials",
