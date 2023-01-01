@@ -96,25 +96,6 @@ export enum CellStates {
   Off,
 }
 
-// The reason we need to identify the animation
-// types as 'Unsafe' and 'Safe' rather than 'Recoiling'
-// and 'NonRecoiling' or something is because the most
-// important thing that the name needs to communicate
-// to the developer is that if they choose the
-// 'Unsafe' animation type, there is a chance that
-// they will encounter a nasty unmount error.
-// This will occur if the callback that is being
-// passed to the hook which uses this enum is updating
-// the  harpface, particularly if it is creating a
-// harp with fewer rows.
-// TODO: Check whether this problem presents itself
-// again before concluding that I don't need these
-// anymore and deleting them.
-export enum TapAnimationTypes {
-  Safe,
-  Unsafe,
-}
-
 export type MenuProps = {
   readonly isMenuStashed: boolean
   readonly isLabelHidden: boolean
