@@ -10,23 +10,23 @@ export const mapHoleToFilterOverbends = (
 
   const leftAdjacentSimpleTones = leftHole
     ? [
-        leftHole.blow,
-        leftHole.draw,
-        ...leftHole.blowbends,
-        ...leftHole.drawbends,
-        ...leftHole.valvedblows,
-        ...leftHole.valveddraws,
-      ]
+      leftHole.blow,
+      leftHole.draw,
+      ...leftHole.blowbends,
+      ...leftHole.drawbends,
+      ...leftHole.valvedblows,
+      ...leftHole.valveddraws,
+    ]
     : []
   const rightAdjacentSimpleTones = rightHole
     ? [
-        rightHole.blow,
-        rightHole.draw,
-        ...rightHole.blowbends,
-        ...rightHole.drawbends,
-        ...rightHole.valvedblows,
-        ...rightHole.valveddraws,
-      ]
+      rightHole.blow,
+      rightHole.draw,
+      ...rightHole.blowbends,
+      ...rightHole.drawbends,
+      ...rightHole.valvedblows,
+      ...rightHole.valveddraws,
+    ]
     : []
 
   const filteredOverblows = hole.overblows.filter(
