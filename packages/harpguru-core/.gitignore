@@ -1,0 +1,9 @@
+node_modules/**/*
+lib/**/*
+
+# vim
+*.swp
+*.swo
+#
+# log files
+*.log
