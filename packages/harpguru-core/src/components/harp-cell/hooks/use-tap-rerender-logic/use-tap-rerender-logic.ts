@@ -38,13 +38,6 @@ export const useTapRerenderLogic = (
     setCellState(isLocallyActive ? CellStates.On : CellStates.Off)
   }
   const addBufferedActivityToggleWrapper = () => {
-    // TODO: Is it sufficient to only check for
-    // this value here? ie was this check only
-    // to apease the type system to stop the
-    // next command presenting an error, or does
-    // it actually present some safety? I don't
-    // think it's possible to actually have an
-    // undefined cell run any of this.
     if (thisDegreeId === undefined) return
     addBufferedActivityToggle(thisDegreeId)
   }
