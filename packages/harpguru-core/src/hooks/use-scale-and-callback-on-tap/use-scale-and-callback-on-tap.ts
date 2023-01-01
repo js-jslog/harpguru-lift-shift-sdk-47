@@ -15,7 +15,7 @@ export const useScaleAndCallbackOnTap = (
   }
   const animationValue = useDerivedValue(() => {
     return withSpring((isTapped ? inflation : 1))
-  }, [isTapped])
+  })
 
   const gestureHandler = useAnimatedGestureHandler<GestureEvent<TapGestureHandlerEventPayload>>({
     onStart: () => {

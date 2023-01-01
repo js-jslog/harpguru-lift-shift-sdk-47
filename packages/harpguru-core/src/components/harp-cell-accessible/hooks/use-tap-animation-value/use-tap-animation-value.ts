@@ -12,7 +12,7 @@ export const useTapAnimationValue = (isTapped: boolean): SharedValue<number> => 
   }, [isTapped])
   const animationValue = useDerivedValue(() => {
     return interpolate(timingValue.value, [0, 1], isTapped ? [0.5, 1] : [1, 1])
-  }, [isTapped])
+  })
 
   return animationValue
 }
