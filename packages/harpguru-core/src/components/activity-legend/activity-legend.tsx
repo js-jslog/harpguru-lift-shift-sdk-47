@@ -101,8 +101,6 @@ const ActivityCell = ({
 
   const animatedStyle = useAnimatedStyle(() => {
     const translateX = interpolate(derivedValue.value, [0, 1], [legendWidth *-1, 0])
-    // TODO: Can all these have the `transform` removed; ie:
-    // return {translateX: activityCellAnimation}
     return { transform: [{translateX}]}
   })
 
