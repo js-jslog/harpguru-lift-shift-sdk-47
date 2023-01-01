@@ -1,9 +1,10 @@
 import { useGlobal } from 'reactn'
-import { useTimingTransition } from 'react-native-redash'
 import Animated, {
-  Easing,
   interpolate,
-  multiply,
+  useAnimatedStyle,
+  useDerivedValue,
+  withTiming,
+  Easing,
 } from 'react-native-reanimated'
 import { View, StyleSheet } from 'react-native'
 import React from 'react'
@@ -91,13 +92,16 @@ const ActivityCell = ({
     },
   })
 
-  const activityCellTiming = useTimingTransition(isActive, {
-    duration: 200,
-    easing: Easing.inOut(Easing.circle),
+  const derivedValue = useDerivedValue(() => {
+    return withTiming((isActive ? 1 : 0), {
+      duration: 200,
+      easing: Easing.inOut(Easing.circle)
+    })
   })
-  const activityCellAnimation = interpolate(activityCellTiming, {
-    inputRange: [0, 1],
-    outputRange: [multiply(legendWidth, -1), 0],
+
+  const animatedStyle = useAnimatedStyle(() => {
+    const translateX = interpolate(derivedValue.value, [0, 1], [legendWidth *-1, 0])
+    return { transform: [{translateX}]}
   })
 
   return (
@@ -106,9 +110,7 @@ const ActivityCell = ({
         <Animated.View
           style={[
             styles.cellColor,
-            {
-              transform: [{ translateX: activityCellAnimation }],
-            },
+            animatedStyle,
           ]}
         />
         <RenderedTone

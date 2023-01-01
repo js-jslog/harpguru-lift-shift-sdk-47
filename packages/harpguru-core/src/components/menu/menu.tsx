@@ -1,5 +1,5 @@
 import { useGlobal } from 'reactn'
-import Animated from 'react-native-reanimated'
+import Animated, { useAnimatedStyle } from 'react-native-reanimated'
 import { StyleSheet } from 'react-native'
 import React from 'react'
 
@@ -40,33 +40,39 @@ export const Menu = ({
     },
   })
 
+  const animatedStyle1 = useAnimatedStyle(() => {
+    return {
+      // WARNING: the order these transforms are listed is
+      // important. I think the size of the translations
+      // will be reduced proportionally to the scaling if
+      // the scaling is performed first. This is platform
+      // independent.
+      transform: [
+        { translateY: slideY.value },
+        { translateX: slideX.value },
+        { scale: scale.value },
+      ]
+    }
+  })
+
+  const animatedStyle2 = useAnimatedStyle(() => {
+    return {
+      backgroundColor: backgroundColor.value,
+      opacity: opacity.value,
+    }
+  })
+
   return (
     <Animated.View
       style={[
         styles.animated,
-        {
-          // WARNING: the order these transforms are listed is
-          // important. I think the size of the translations
-          // will be reduced proportionally to the scaling if
-          // the scaling is performed first. This is platform
-          // independent.
-          transform: [
-            {
-              translateY: slideY,
-              translateX: slideX,
-              scale: scale,
-            },
-          ],
-        },
+        animatedStyle1
       ]}
     >
       <Animated.View
         style={[
           styles.overlay,
-          {
-            backgroundColor,
-            opacity: opacity,
-          },
+          animatedStyle2
         ]}
       >
         {children}

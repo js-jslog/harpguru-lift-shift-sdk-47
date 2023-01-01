@@ -1,4 +1,4 @@
-import Animated from 'react-native-reanimated'
+import Animated, {useAnimatedStyle} from 'react-native-reanimated'
 import { StyleSheet } from 'react-native'
 import React from 'react'
 import type { ReactElement } from 'react'
@@ -45,43 +45,54 @@ export const NotificationFlash = ({
     },
   })
 
+  const animatedStyle1 = useAnimatedStyle(() => {
+    return {
+      transform: [{translateX: translateX.value}],
+      opacity: explosionOpacity.value
+    }
+  })
+  const animatedStyle2 = useAnimatedStyle(() => {
+    return {
+      transform: [{translateX: translateX.value}],
+      opacity: messageOpacity.value
+    }
+  })
+  const animatedStyle3 = useAnimatedStyle(() => {
+    return {
+      transform: [
+        // WARNING: in iOS only; the scale *must* be performed before the
+        // translation, or the translation will not be observed at all.
+        // I do not have a good explanation for this and it doesn't seem
+        // to conform to the observation of the other comment added in
+        // this commit.
+        {scale: messageScale.value},
+        {translateX: translateX.value}
+      ],
+      opacity: messageOpacity.value
+    }
+  })
+
   return (
     <>
       <Animated.View
+        pointerEvents='none'
         style={[
           styles.pinkExplosion,
-          {
-            transform: [{ translateX: translateX }],
-            opacity: explosionOpacity,
-          },
+          animatedStyle1
         ]}
       />
       <Animated.View
+        pointerEvents='none'
         style={[
           styles.messageUnderlay,
-          {
-            transform: [{ translateX: translateX }],
-            opacity: messageOpacity,
-          },
+          animatedStyle2
         ]}
       />
       <Animated.View
+        pointerEvents='none'
         style={[
           styles.message,
-          {
-            transform: [
-              {
-                // WARNING: in iOS only; the scale *must* be performed before the
-                // translation, or the translation will not be observed at all.
-                // I do not have a good explanation for this and it doesn't seem
-                // to conform to the observation of the other comment added in
-                // this commit.
-                scale: messageScale,
-                translateX: translateX,
-              },
-            ],
-            opacity: messageOpacity,
-          },
+          animatedStyle3
         ]}
       >
         {children}
