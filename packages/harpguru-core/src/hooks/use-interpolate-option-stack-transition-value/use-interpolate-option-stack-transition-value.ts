@@ -9,7 +9,7 @@ import { getInputRange, getOutputRange } from '../../utils'
 export const useInterpolateOptionStackTransitionValue = (
   rangeLength: number,
   index: number,
-  transitionValue: number,
+  transitionValue: number
 ): number => {
   'worklet'
   const inputRange = getInputRange(rangeLength)

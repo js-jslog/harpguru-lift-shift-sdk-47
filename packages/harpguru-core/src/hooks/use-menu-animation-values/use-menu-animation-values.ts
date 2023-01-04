@@ -65,14 +65,14 @@ export const useMenuAnimationValues = (
   const { shortEdge, longEdge } = getWindowDimensions()
   const animationDuration = 300
   const stashMenuTiming = useDerivedValue(() => {
-    return withTiming((isMenuStashed ? 1 : 0), {
+    return withTiming(isMenuStashed ? 1 : 0, {
       duration: animationDuration,
       easing: Easing.inOut(Easing.ease),
     })
   })
 
   const hideLabelTiming = useDerivedValue(() => {
-    return withTiming((isLabelHidden ? 1 : 0), {
+    return withTiming(isLabelHidden ? 1 : 0, {
       duration: animationDuration,
       easing: Easing.inOut(Easing.ease),
     })
@@ -83,24 +83,47 @@ export const useMenuAnimationValues = (
     const scaledFullX = longEdge * menuScaleTranslationFactor
     const stashedX = longEdge - scaledFullX
     const stashXVector = stashedX * stashXDirection
-    const stashXValue = interpolate(stashMenuTiming.value, [0, 1], [0, stashXVector])
-    const hideXValue = interpolate(hideLabelTiming.value, [0, 1], [0, hideLabelVector])
+    const stashXValue = interpolate(
+      stashMenuTiming.value,
+      [0, 1],
+      [0, stashXVector]
+    )
+    const hideXValue = interpolate(
+      hideLabelTiming.value,
+      [0, 1],
+      [0, hideLabelVector]
+    )
     return stashXValue + hideXValue
   })
-
 
   const slideY = useDerivedValue(() => {
     const stashedY = shortEdge * menuStashedYOffsetFactor
     const scaledStashedY = stashedY * menuScaleTranslationFactor
     const stashedYVector = scaledStashedY * stashYDirection
-    const stashYValue = interpolate(stashMenuTiming.value, [0, 1], [0, stashedYVector])
+    const stashYValue = interpolate(
+      stashMenuTiming.value,
+      [0, 1],
+      [0, stashedYVector]
+    )
     return stashYValue
   })
-  const backgroundColor = useDerivedValue(() => interpolateColor(stashMenuTiming.value, [0, 1], [colors.pageColor, colors.inertOutline]))
-  const opacity = useDerivedValue(() => interpolate(stashMenuTiming.value, [0, 1], [overlayOpacity, 1]))
+  const backgroundColor = useDerivedValue(() =>
+    interpolateColor(
+      stashMenuTiming.value,
+      [0, 1],
+      [colors.pageColor, colors.inertOutline]
+    )
+  )
+  const opacity = useDerivedValue(() =>
+    interpolate(stashMenuTiming.value, [0, 1], [overlayOpacity, 1])
+  )
 
-  const scale = useDerivedValue(() => interpolate(stashMenuTiming.value, [0, 1], [1, menuStashedScale]))
-  const labelCounterScale = useDerivedValue(() => interpolate(scale.value, [menuStashedScale, 1], [1 / menuStashedScale, 0]))
+  const scale = useDerivedValue(() =>
+    interpolate(stashMenuTiming.value, [0, 1], [1, menuStashedScale])
+  )
+  const labelCounterScale = useDerivedValue(() =>
+    interpolate(scale.value, [menuStashedScale, 1], [1 / menuStashedScale, 0])
+  )
 
   return {
     slideX,

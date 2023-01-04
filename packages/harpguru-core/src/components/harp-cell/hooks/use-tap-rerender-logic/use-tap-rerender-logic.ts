@@ -1,4 +1,5 @@
 import { useGlobal } from 'reactn'
+import { runOnJS, useAnimatedGestureHandler } from 'react-native-reanimated'
 import type {
   GestureEvent,
   TapGestureHandlerEventPayload,
@@ -9,9 +10,10 @@ import { DegreeIds } from 'harpparts'
 import { useAddBufferedActivityToggle } from '../use-add-buffered-activity-toggle'
 import { CellStates } from '../../../../types'
 import { tapAnimationDuration } from '../../../../constants'
-import { runOnJS, useAnimatedGestureHandler } from 'react-native-reanimated'
 
-type GestureHandler = (arg0: GestureEvent<TapGestureHandlerEventPayload>) => void
+type GestureHandler = (
+  arg0: GestureEvent<TapGestureHandlerEventPayload>
+) => void
 
 export const useTapRerenderLogic = (
   thisDegreeId: DegreeIds | undefined,
@@ -41,20 +43,29 @@ export const useTapRerenderLogic = (
     if (thisDegreeId === undefined) return
     addBufferedActivityToggle(thisDegreeId)
   }
-  const gestureHandler = useAnimatedGestureHandler<GestureEvent<TapGestureHandlerEventPayload>>({
-    onStart: () => {
-      runOnJS(onStartSetCellStateWrapper)()
+  const gestureHandler = useAnimatedGestureHandler<
+    GestureEvent<TapGestureHandlerEventPayload>
+  >(
+    {
+      onStart: () => {
+        runOnJS(onStartSetCellStateWrapper)()
+      },
+      onCancel: () => {
+        runOnJS(onCancelSetCellStateWrapper)()
+      },
+      onFail: () => {
+        runOnJS(onCancelSetCellStateWrapper)()
+      },
+      onEnd: () => {
+        runOnJS(addBufferedActivityToggleWrapper)()
+      },
     },
-    onCancel: () => {
-      runOnJS(onCancelSetCellStateWrapper)()
-    },
-    onFail: () => {
-      runOnJS(onCancelSetCellStateWrapper)()
-    },
-    onEnd: () => {
-      runOnJS(addBufferedActivityToggleWrapper)()
-    },
-  }, [onStartSetCellStateWrapper, onCancelSetCellStateWrapper, addBufferedActivityToggleWrapper])
+    [
+      onStartSetCellStateWrapper,
+      onCancelSetCellStateWrapper,
+      addBufferedActivityToggleWrapper,
+    ]
+  )
 
   // This ensures that once the harpstrata's activity has been updated from
   // the toggle buffer, a render is produced in all the cells by their state

@@ -40,19 +40,13 @@ export const MenuAccessOpen = ({
 
   const animatedStyle = useAnimatedStyle(() => {
     const totalScaleValue = tapAnimationValue.value + labelCounterScale.value
-    return {transform: [{ scale: totalScaleValue}]}
+    return { transform: [{ scale: totalScaleValue }] }
   })
 
   return (
     <TapGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View style={style}>
-        <Animated.View
-          style={[
-            animatedStyle
-          ]}
-        >
-          {children}
-        </Animated.View>
+        <Animated.View style={[animatedStyle]}>{children}</Animated.View>
       </Animated.View>
     </TapGestureHandler>
   )
